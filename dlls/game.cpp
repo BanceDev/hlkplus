@@ -12,6 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
+#include "cvardef.h"
 #include "extdll.h"
 #include "eiface.h"
 #include "util.h"
@@ -27,6 +28,8 @@ cvar_t timeleft = {"mp_timeleft", "0", FCVAR_SERVER | FCVAR_UNLOGGED};	 // "    
 
 // multiplayer server rules
 cvar_t teamplay = {"mp_teamplay", "0", FCVAR_SERVER};
+cvar_t primaryweap = {"mp_primaryweap", "0", FCVAR_SERVER};
+cvar_t utilityweap = {"mp_utilityweap", "0", FCVAR_SERVER};
 cvar_t fraglimit = {"mp_fraglimit", "0", FCVAR_SERVER};
 cvar_t timelimit = {"mp_timelimit", "0", FCVAR_SERVER};
 cvar_t friendlyfire = {"mp_friendlyfire", "0", FCVAR_SERVER};
@@ -501,6 +504,8 @@ void GameDLLInit()
 	CVAR_REGISTER(&teamplay);
 	CVAR_REGISTER(&fraglimit);
 	CVAR_REGISTER(&timelimit);
+	CVAR_REGISTER(&primaryweap);
+	CVAR_REGISTER(&utilityweap);
 
 	CVAR_REGISTER(&fragsleft);
 	CVAR_REGISTER(&timeleft);

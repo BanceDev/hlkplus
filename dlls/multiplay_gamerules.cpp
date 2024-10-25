@@ -499,6 +499,17 @@ void CHalfLifeMultiplay::PlayerSpawn(CBasePlayer* pPlayer)
 		pPlayer->GiveNamedItem("weapon_crowbar");
 		pPlayer->GiveNamedItem("weapon_9mmhandgun");
 		pPlayer->GiveAmmo(68, "9mm", _9MM_MAX_CARRY); // 4 full reloads
+		if (primaryweap.value == 0) {
+			pPlayer->GiveNamedItem("weapon_9mmAR");
+		} else if (primaryweap.value == 1) {
+			pPlayer->GiveNamedItem("weapon_shotgun");
+		} else if (primaryweap.value == 2) {
+			pPlayer->GiveNamedItem("weapon_crossbow");
+		} else if (primaryweap.value == 3) {
+			pPlayer->GiveNamedItem("weapon_hornetgun");
+		} else if (primaryweap.value == 4) {
+			pPlayer->GiveNamedItem("weapon_357");
+		}
 	}
 
 	pPlayer->m_iAutoWepSwitch = originalAutoWepSwitch;
