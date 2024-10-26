@@ -37,6 +37,7 @@
 #include "tri.h"
 #include "vgui_TeamFortressViewport.h"
 #include "filesystem_utils.h"
+#include "CImGuiMan.h"
 
 cl_enginefunc_t gEngfuncs;
 CHud gHUD;
@@ -45,6 +46,8 @@ TeamFortressViewport* gViewPort = NULL;
 
 #include "particleman.h"
 IParticleMan* g_pParticleMan = nullptr;
+
+modfuncs_s* g_pModFuncs = nullptr;
 
 void CL_LoadParticleMan();
 void CL_UnloadParticleMan();
@@ -192,6 +195,7 @@ void DLLEXPORT HUD_Init()
 	InitInput();
 	gHUD.Init();
 	Scheme_Init();
+	g_ImGuiMan.InitImgui();
 }
 
 
@@ -318,7 +322,9 @@ void CL_LoadParticleMan()
 extern "C" void DLLEXPORT F(void* pv)
 {
 	cldll_func_t* pcldll_func = (cldll_func_t*)pv;
-
+	
+	g_pModFuncs = reinterpret_cast<modfuncs_s*>(pcldll_func->pInitFunc);
+	
 	cldll_func_t cldll_func =
 		{
 			Initialize,

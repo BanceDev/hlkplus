@@ -21,6 +21,7 @@
 #include "vgui_TeamFortressViewport.h"
 #include "filesystem_utils.h"
 
+#include "CImGuiMan.h"
 
 extern bool g_iAlive;
 
@@ -1017,6 +1018,8 @@ void CL_UnloadParticleMan();
 void DLLEXPORT HUD_Shutdown()
 {
 	//	RecClShutdown();
+	
+	g_ImGuiMan.ShutdownImgui();
 
 	ShutdownInput();
 

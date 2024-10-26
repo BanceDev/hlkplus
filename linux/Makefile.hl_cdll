@@ -11,15 +11,17 @@ HL1_OBJ_DIR=$(BUILD_OBJ_DIR)/hl1_client
 HL1_PARTICLEMAN_OBJ_DIR=$(BUILD_OBJ_DIR)/particleman
 PUBLIC_OBJ_DIR=$(HL1_OBJ_DIR)/public
 COMMON_OBJ_DIR=$(HL1_OBJ_DIR)/common
+EXTERNAL_OBJ_DIR=$(HL1_OBJ_DIR)/external/imgui
+EXTERNAL_SRC_DIR=$(SOURCE_DIR)/external/imgui
 GAME_SHARED_OBJ_DIR=$(HL1_OBJ_DIR)/game_shared
 HL1_SERVER_OBJ_DIR=$(HL1_OBJ_DIR)/server
 PM_SHARED_OBJ_DIR=$(HL1_OBJ_DIR)/pm_shared
 
 CFLAGS=$(BASE_CFLAGS) $(ARCH_CFLAGS) -DCLIENT_DLL
 
-INCLUDEDIRS=-I$(HL_SRC_DIR) -I$(HL_PARTICLEMAN_DIR) -I../dlls -I/usr/include/malloc -I$(COMMON_SRC_DIR) -I$(PUBLIC_SRC_DIR) -I../pm_shared -I../engine -I../utils/vgui/include -I../game_shared -I../external
+INCLUDEDIRS=-I$(HL_SRC_DIR) -I$(HL_PARTICLEMAN_DIR) -I../dlls -I/usr/include/malloc -I$(COMMON_SRC_DIR) -I$(PUBLIC_SRC_DIR) -I../pm_shared -I../engine -I../utils/vgui/include -I../game_shared -I../external -I../external/imgui/
 
-LDFLAGS=$(SHLIBLDFLAGS) $(CPP_LIB) -L$(CFG) vgui.so -L. libSDL2-2.0.so.0
+LDFLAGS=$(SHLIBLDFLAGS) $(CPP_LIB) -L$(CFG) vgui.so -lGL -lSDL2
 
 DO_CC=$(CPLUS) $(INCLUDEDIRS) $(CFLAGS) -o $@ -c $<
 
@@ -52,12 +54,14 @@ HL1_OBJS = \
 	$(HL1_OBJ_DIR)/hud_msg.o \
 	$(HL1_OBJ_DIR)/hud_redraw.o \
 	$(HL1_OBJ_DIR)/hud_update.o \
+	$(HL1_OBJ_DIR)/ImGuiManager.o \
 	$(HL1_OBJ_DIR)/in_camera.o \
 	$(HL1_OBJ_DIR)/input.o \
 	$(HL1_OBJ_DIR)/interpolation.o \
 	$(HL1_OBJ_DIR)/menu.o \
 	$(HL1_OBJ_DIR)/message.o \
 	$(HL1_OBJ_DIR)/saytext.o \
+	$(HL1_OBJ_DIR)/sdl2_fix.o \
 	$(HL1_OBJ_DIR)/status_icons.o \
 	$(HL1_OBJ_DIR)/statusbar.o \
 	$(HL1_OBJ_DIR)/studio_util.o \
@@ -109,6 +113,15 @@ COMMON_OBJS = \
 	$(COMMON_OBJ_DIR)/mathlib.o \
 	$(COMMON_OBJ_DIR)/parsemsg.o \
 
+EXTERNAL_OBJS = \
+	$(EXTERNAL_OBJ_DIR)/imgui_impl_opengl2.o \
+	$(EXTERNAL_OBJ_DIR)/imgui_impl_sdl2.o \
+	$(EXTERNAL_OBJ_DIR)/imgui.o \
+	$(EXTERNAL_OBJ_DIR)/imgui_demo.o \
+	$(EXTERNAL_OBJ_DIR)/imgui_draw.o \
+	$(EXTERNAL_OBJ_DIR)/imgui_tables.o \
+	$(EXTERNAL_OBJ_DIR)/imgui_widgets.o \
+
 GAME_SHARED_OBJS = \
 	$(GAME_SHARED_OBJ_DIR)/filesystem_utils.o \
 	$(GAME_SHARED_OBJ_DIR)/vgui_checkbutton2.o \
@@ -127,8 +140,8 @@ PM_SHARED_OBJS = \
 
 all: client.$(SHLIBEXT)
 
-client.$(SHLIBEXT): $(HL1_OBJS) $(PUBLIC_OBJS) $(COMMON_OBJS) $(GAME_SHARED_OBJS) $(DLL_OBJS) $(PM_SHARED_OBJS) $(HL1_PARTICLEMAN_OBJS)
-	$(CPLUS) -o $(BUILD_DIR)/$@ $(HL1_OBJS) $(PUBLIC_OBJS) $(COMMON_OBJS) $(GAME_SHARED_OBJS) $(DLL_OBJS) $(PM_SHARED_OBJS) $(HL1_PARTICLEMAN_OBJS) $(LDFLAGS) $(CPP_LIB)
+client.$(SHLIBEXT): $(HL1_OBJS) $(PUBLIC_OBJS) $(COMMON_OBJS) $(EXTERNAL_OBJS) $(GAME_SHARED_OBJS) $(DLL_OBJS) $(PM_SHARED_OBJS) $(HL1_PARTICLEMAN_OBJS)
+	$(CPLUS) -o $(BUILD_DIR)/$@ $(HL1_OBJS) $(PUBLIC_OBJS) $(COMMON_OBJS) $(EXTERNAL_OBJS) $(GAME_SHARED_OBJS) $(DLL_OBJS) $(PM_SHARED_OBJS) $(HL1_PARTICLEMAN_OBJS) $(LDFLAGS) $(CPP_LIB)
 	./gendbg.sh $(BUILD_DIR)/client.$(SHLIBEXT)
 
 $(HL1_OBJ_DIR):
@@ -147,6 +160,9 @@ $(PUBLIC_OBJ_DIR):
 
 $(COMMON_OBJ_DIR):
 	mkdir -p $(COMMON_OBJ_DIR)
+
+$(EXTERNAL_OBJ_DIR):
+	mkdir -p $(EXTERNAL_OBJ_DIR)
 
 $(GAME_SHARED_OBJ_DIR):
 	mkdir -p $(GAME_SHARED_OBJ_DIR)
@@ -176,6 +192,9 @@ $(PUBLIC_OBJ_DIR)/%.o : $(PUBLIC_SRC_DIR)/%.cpp $(filter-out $(wildcard  $(PUBLI
 	$(DO_CC)
 
 $(COMMON_OBJ_DIR)/%.o : $(COMMON_SRC_DIR)/%.cpp $(filter-out $(wildcard  $(COMMON_OBJ_DIR)),  $(COMMON_OBJ_DIR))
+	$(DO_CC)
+
+$(EXTERNAL_OBJ_DIR)/%.o : $(EXTERNAL_SRC_DIR)/%.cpp $(filter-out $(wildcard  $(EXTERNAL_OBJ_DIR)),  $(EXTERNAL_OBJ_DIR))
 	$(DO_CC)
 
 $(GAME_SHARED_OBJ_DIR)/%.o : $(GAME_SHARED_SRC_DIR)/%.cpp $(filter-out $(wildcard  $(GAME_SHARED_OBJ_DIR)),  $(GAME_SHARED_OBJ_DIR))

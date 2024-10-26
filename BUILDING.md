@@ -8,11 +8,11 @@
 * Visual Studio 2019 or newer
 
 ### Linux
-
 * GCC 9 or newer (C++17 support or newer required)
 * Packages:
     * `g++-multilib`
     * `libgl1-mesa-dev` (or an equivalent package that provides the OpenGL headers)
+    * `libsdl2-dev`
 
 ## Building
 
