@@ -54,8 +54,8 @@ jobs:
         with:
           name: Win32
           path: |
-            projects/vs2019/Release/hl_cdll/client.dll
-            projects/vs2019/Release/hl_cdll/client.pdb
-            projects/vs2019/Release/hldll/hl.dll
-            projects/vs2019/Release/hldll/hl.pdb
+            projects/vs2022/Release/hl_cdll/client.dll
+            projects/vs2022/Release/hl_cdll/client.pdb
+            projects/vs2022/Release/hldll/hl.dll
+            projects/vs2022/Release/hldll/hl.pdb
       
