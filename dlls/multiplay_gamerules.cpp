@@ -503,12 +503,30 @@ void CHalfLifeMultiplay::PlayerSpawn(CBasePlayer* pPlayer)
 			pPlayer->GiveNamedItem("weapon_9mmAR");
 		} else if (primaryweap.value == 1) {
 			pPlayer->GiveNamedItem("weapon_shotgun");
+			pPlayer->GiveNamedItem("ammo_buckshot");
 		} else if (primaryweap.value == 2) {
 			pPlayer->GiveNamedItem("weapon_crossbow");
+			pPlayer->GiveNamedItem("ammo_crossbow");
 		} else if (primaryweap.value == 3) {
 			pPlayer->GiveNamedItem("weapon_hornetgun");
 		} else if (primaryweap.value == 4) {
 			pPlayer->GiveNamedItem("weapon_357");
+			pPlayer->GiveNamedItem("ammo_357");
+			pPlayer->GiveNamedItem("ammo_357");
+		}
+
+		if (utilityweap.value == 0) {
+			pPlayer->GiveNamedItem("weapon_handgrenade");
+			pPlayer->GiveNamedItem("weapon_handgrenade");
+		} else if (utilityweap.value == 1) {
+			pPlayer->GiveNamedItem("weapon_tripmine");
+			pPlayer->GiveNamedItem("weapon_tripmine");
+		} else if (utilityweap.value == 2) {
+			pPlayer->GiveNamedItem("weapon_satchel");
+			pPlayer->GiveNamedItem("weapon_satchel");
+		} else if (utilityweap.value == 3) {
+			pPlayer->GiveNamedItem("weapon_snark");
+			pPlayer->GiveNamedItem("weapon_snark");
 		}
 	}
 
